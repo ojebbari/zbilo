@@ -1,0 +1,237 @@
+/* SpaceRemit Admin Styles */
+
+.spaceremit-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.spaceremit-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.spaceremit-stat-box {
+    text-align: center;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    min-width: 120px;
+}
+
+.spaceremit-stat-box h3 {
+    margin: 0 0 5px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.spaceremit-stat-box p {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.spaceremit-filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.spaceremit-filters select,
+.spaceremit-filters input {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+/* Transaction Status Styles */
+.spaceremit-status {
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.spaceremit-status-completed {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.spaceremit-status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.spaceremit-status-processing {
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #99d6ff;
+}
+
+.spaceremit-status-failed {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.spaceremit-status-cancelled {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+}
+
+.spaceremit-status small {
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+/* Table Styles */
+#spaceremit-transactions-table {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#spaceremit-transactions-table table {
+    margin: 0;
+}
+
+#spaceremit-transactions-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    padding: 12px 8px;
+}
+
+#spaceremit-transactions-table td {
+    padding: 12px 8px;
+    vertical-align: top;
+}
+
+#spaceremit-transactions-table code {
+    background: #f1f1f1;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+/* Button Styles */
+.sync-payment {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+    height: auto !important;
+}
+
+.sync-payment:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .spaceremit-admin-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .spaceremit-stats {
+        justify-content: center;
+    }
+    
+    .spaceremit-filters {
+        justify-content: center;
+    }
+    
+    #spaceremit-transactions-table {
+        overflow-x: auto;
+    }
+    
+    #spaceremit-transactions-table table {
+        min-width: 800px;
+    }
+}
+
+/* Loading States */
+.spaceremit-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spaceremit-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Pagination */
+.tablenav {
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+.tablenav-pages {
+    text-align: center;
+}
+
+.tablenav-pages a,
+.tablenav-pages span {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 2px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.tablenav-pages .current {
+    background: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+/* Notices */
+.spaceremit-notice {
+    padding: 10px 15px;
+    margin: 15px 0;
+    border-left: 4px solid #0073aa;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.spaceremit-notice.error {
+    border-left-color: #dc3232;
+}
+
+.spaceremit-notice.success {
+    border-left-color: #46b450;
+}
+
+.spaceremit-notice.warning {
+    border-left-color: #ffb900;
+}

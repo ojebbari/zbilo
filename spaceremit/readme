@@ -1,0 +1,470 @@
+# SpaceRemit WooCommerce Payment Gateway
+
+Accept payments on your WooCommerce store using SpaceRemit payment gateway. This plugin supports local payment methods, card payments, and provides seamless integration with WordPress and WooCommerce's latest features including HPOS (High-Performance Order Storage) and Checkout Blocks.
+
+## 📋 Table of Contents
+
+- [Features]
+- [Requirements]
+- [Installation]
+- [Configuration]
+- [Webhook Setup]
+- [Usage]
+- [Troubleshooting]
+- [FAQ]
+- [Changelog]
+- [Support]
+
+## ✨ Features
+
+- **Multiple Payment Methods**: Support for local payment methods and credit/debit cards
+- **Live & Test Modes**: Separate API keys for testing and production environments
+- **Webhook Synchronization**: Automatic order status updates when SpaceRemit team changes payment status
+- **HPOS Compatible**: Full support for WooCommerce High-Performance Order Storage
+- **Checkout Blocks Support**: Works seamlessly with WooCommerce Checkout Blocks
+- **Comprehensive Logging**: Detailed debug logs for troubleshooting
+- **Idempotent Webhooks**: Prevents duplicate webhook processing
+- **Signature Validation**: Optional webhook signature verification for enhanced security
+- **Transaction Dashboard**: View and manage all SpaceRemit transactions from WordPress admin
+- **Multi-currency Support**: Process payments in multiple currencies
+- **Responsive Design**: Mobile-friendly payment forms
+
+## 📦 Requirements
+
+- **WordPress**: 5.0 or higher
+- **WooCommerce**: 5.0 or higher
+- **PHP**: 7.4 or higher
+- **MySQL**: 5.6 or higher / MariaDB 10.0 or higher
+- **HTTPS**: Required for production (SSL certificate)
+- **SpaceRemit Account**: Merchant account with API credentials
+
+## 🚀 Installation
+
+### Method 1: WordPress Admin Upload
+
+1. Download the plugin zip file
+2. Go to **WordPress Admin** → **Plugins** → **Add New**
+3. Click **Upload Plugin** button
+4. Choose the downloaded zip file
+5. Click **Install Now**
+6. After installation, click **Activate Plugin**
+
+### Method 2: Manual Installation
+
+1. Download and extract the plugin files
+2. Upload the `spaceremit-woocommerce` folder to `/wp-content/plugins/` directory
+3. Go to **WordPress Admin** → **Plugins**
+4. Find **SpaceRemit WooCommerce Payment Gateway** and click **Activate**
+
+### Method 3: FTP Installation
+
+1. Extract the plugin zip file
+2. Connect to your server via FTP
+3. Upload the `spaceremit-woocommerce` folder to `/wp-content/plugins/`
+4. Activate the plugin from WordPress admin
+
+## ⚙️ Configuration
+
+### Step 1: Get Your API Keys
+
+1. Log in to your **SpaceRemit Merchant Account**
+2. Navigate to **Settings** → **API Keys**
+3. Copy your **Live Public Key** and **Live Secret Key**
+4. Copy your **Test Public Key** and **Test Secret Key** (for testing)
+
+### Step 2: Configure the Plugin
+
+1. Go to **WooCommerce** → **Settings** → **Payments**
+2. Find **SpaceRemit** in the payment methods list
+3. Click **Manage** or toggle to enable
+
+#### Basic Settings
+
+- **Enable/Disable**: Check to enable SpaceRemit payments
+- **Title**: Payment method name shown to customers (default: "SpaceRemit")
+- **Description**: Payment method description shown at checkout
+
+#### API Configuration
+
+##### Live API Keys (Production)
+- **Live Public Key**: Enter your SpaceRemit live public key
+- **Live Secret Key**: Enter your SpaceRemit live secret key
+
+##### Test API Keys (Testing)
+- **Test Public Key**: Enter your SpaceRemit test public key
+- **Test Secret Key**: Enter your SpaceRemit test secret key
+
+##### Mode Selection
+- **Test Mode**: Enable this to use test API keys for testing payments
+  - When enabled, uses Test Public Key and Test Secret Key
+  - When disabled, uses Live Public Key and Live Secret Key
+  - A test mode notice will be displayed to customers during checkout
+
+#### Payment Options
+
+- **Local Payment Methods**: Enable local payment methods (bank transfers, e-wallets, etc.)
+- **Card Payment**: Enable credit/debit card payments
+
+### Step 3: Save Settings
+
+Click **Save changes** at the bottom of the page.
+
+## 🔔 Webhook Setup
+
+Webhooks allow SpaceRemit to notify your store when payment status changes on their end. This ensures order statuses are synchronized in real-time.
+
+### Configure Webhook URL in SpaceRemit
+
+1. Log in to your **SpaceRemit Merchant Account**
+2. Navigate to **Settings** → **Webhooks** or **API Settings**
+3. Add a new webhook with the following URL:
+
+```
+https://your-domain.com/?spaceremit_callback=1
+```
+
+**Important**: Replace `your-domain.com` with your actual WordPress site URL.
+
+### Webhook Events
+
+The webhook will be triggered for the following events:
+- Payment completed
+- Payment pending
+- Payment failed
+- Payment cancelled/expired
+- Payment processing
+
+### Webhook Security (Optional)
+
+For enhanced security, you can enable webhook signature validation:
+
+1. Generate a webhook secret in your SpaceRemit account
+2. Go to **WooCommerce** → **Settings** → **Payments** → **SpaceRemit**
+3. Enter your **Webhook Secret** in the appropriate field
+4. Save changes
+
+The plugin will verify incoming webhooks using HMAC-SHA256 signature validation.
+
+### Testing Webhooks
+
+1. Enable **Test Mode** in plugin settings
+2. Configure test webhook URL in SpaceRemit test environment
+3. Make a test payment
+4. Change payment status in SpaceRemit dashboard
+5. Verify order status updates in WooCommerce
+6. Check debug logs for webhook processing details
+
+## 🛍️ Usage
+
+### For Customers
+
+1. Add products to cart
+2. Proceed to checkout
+3. Select **SpaceRemit** as payment method
+4. Choose payment option (Local Methods or Card Payment)
+5. Click **Place Order**
+6. Complete payment on SpaceRemit payment page
+7. Return to store to see order confirmation
+
+### For Store Administrators
+
+#### View Transactions
+
+1. Go to **WooCommerce** → **SpaceRemit Transactions**
+2. View all transactions with:
+   - Order ID and customer details
+   - SpaceRemit Payment ID
+   - Amount and currency
+   - Payment status
+   - Payment method used
+   - Transaction date
+
+#### Filter Transactions
+
+Use the filter options to:
+- Filter by status (Completed, Pending, Failed, etc.)
+- Filter by date range
+- Export transactions to CSV
+
+#### Sync Payment Status
+
+1. Find the transaction in the list
+2. Click **Sync** button to manually update status from SpaceRemit
+3. Order status will be updated accordingly
+
+#### View Order Details
+
+1. Click on order number in transactions list
+2. View complete order details in WooCommerce
+3. See payment notes and status history
+
+## 🔧 Troubleshooting
+
+### Common Issues and Solutions
+
+#### Issue: Payment method not showing at checkout
+
+**Solutions:**
+1. Verify plugin is activated
+2. Check that API keys are configured correctly
+3. Ensure at least one payment option is enabled (Local Methods or Card Payment)
+4. Clear WordPress cache and browser cache
+5. Check WooCommerce → Status → Logs for errors
+
+#### Issue: Webhook not updating order status
+
+**Solutions:**
+1. **Verify webhook URL is correct:**
+   - Go to SpaceRemit dashboard
+   - Check webhook URL: `https://your-domain.com/?spaceremit_callback=1`
+   - Ensure URL is accessible (not blocked by firewall)
+
+2. **Check webhook logs:**
+   - Enable Debug Log in plugin settings
+
+3. **Verify API keys:**
+   - Ensure correct API keys are used (Live vs Test mode)
+   - Test mode requires test API keys
+   - Live mode requires live API keys
+
+4. **Check server configuration:**
+   - Ensure server can receive POST requests
+   - Verify no firewall blocking webhook calls
+   - Check that PHP can execute `file_get_contents('php://input')`
+
+5. **Test webhook manually:**
+   - Use tools like Postman or webhook.site
+   - Send test POST request to webhook URL
+   - Check response and logs
+
+#### Issue: Orders stuck in "Pending Payment"
+
+**Solutions:**
+1. Check if customer completed payment on SpaceRemit
+2. Manually sync payment status using Sync button
+3. Verify webhook is configured and working
+4. Check SpaceRemit dashboard for payment status
+5. Review debug logs for errors
+
+#### Issue: "Test Mode" notice showing in live environment
+
+**Solutions:**
+1. Go to plugin settings
+2. Uncheck "Enable Test Mode"
+3. Ensure Live API keys are configured
+4. Save changes
+
+#### Issue: Duplicate webhook processing
+
+**Solution:**
+- The plugin has built-in idempotency handling
+- Duplicate webhooks within 5 minutes are automatically ignored
+- Check logs to confirm idempotent processing
+
+### Debug Logging
+
+Enable detailed logging to troubleshoot issues:
+
+1. Go to **WooCommerce** → **Settings** → **Payments** → **SpaceRemit**
+2. Check **Enable Debug Log**
+3. Save changes
+4. Reproduce the issue
+5. Check logs
+
+**Log Information Includes:**
+- API requests and responses
+- Webhook notifications
+- Payment processing steps
+- Error messages and stack traces
+- Processing times
+
+### Getting Support
+
+If you need additional help:
+
+1. **Check Documentation**: Review this README thoroughly
+2. **Check Logs**: Enable debug logging and review error messages
+3. **SpaceRemit Support**: Contact SpaceRemit merchant support
+4. **WordPress/WooCommerce**: Ensure your WordPress and WooCommerce are up to date
+
+## ❓ FAQ
+
+### General Questions
+
+**Q: Is this plugin free?**
+A: Yes, the plugin is free. However, you need a SpaceRemit merchant account to process payments.
+
+**Q: What payment methods are supported?**
+A: SpaceRemit supports local payment methods (bank transfers, e-wallets) and credit/debit cards.
+
+**Q: Can I use this in test mode?**
+A: Yes, enable Test Mode in settings and use your test API keys to process test payments.
+
+**Q: Is HTTPS required?**
+A: Yes, HTTPS (SSL certificate) is required for production to ensure secure payment processing.
+
+### Technical Questions
+
+**Q: Does this work with WooCommerce Subscriptions?**
+A: Currently, the plugin supports one-time payments. Subscription support may be added in future versions.
+
+**Q: Is it compatible with HPOS (High-Performance Order Storage)?**
+A: Yes, the plugin fully supports WooCommerce HPOS.
+
+**Q: Does it work with WooCommerce Checkout Blocks?**
+A: Yes, the plugin includes full support for WooCommerce Checkout Blocks.
+
+**Q: How does webhook signature validation work?**
+A: The plugin uses HMAC-SHA256 to verify webhook authenticity. Configure a webhook secret in both SpaceRemit and plugin settings.
+
+**Q: How is idempotency handled?**
+A: The plugin checks if a webhook with the same payment ID and status has been processed within the last 5 minutes and ignores duplicates.
+
+**Q: What happens if webhook fails?**
+A: SpaceRemit will retry failed webhooks. You can also manually sync payment status from the transactions dashboard.
+
+### Webhook Questions
+
+**Q: Why is my webhook URL not working?**
+A: Ensure:
+- URL is correct: `https://your-domain.com/?spaceremit_callback=1`
+- Server allows POST requests
+- No firewall blocking incoming requests
+- WordPress permalinks are enabled
+
+**Q: How can I test webhooks locally?**
+A: Use tools like ngrok to expose your local server, then configure the ngrok URL as webhook URL in SpaceRemit.
+
+**Q: When does the webhook get triggered?**
+A: Webhooks are triggered when:
+- Payment status changes in SpaceRemit
+- SpaceRemit team manually updates payment status
+- Payment is completed, failed, or cancelled
+
+## 📝 Changelog
+
+### Version 1.0.5 (Current)
+- **Enhanced**: Improved webhook handler with comprehensive logging
+- **Added**: Idempotency handling to prevent duplicate webhook processing
+- **Added**: Webhook signature validation for enhanced security
+- **Added**: Better error handling with proper HTTP response codes
+- **Fixed**: Order status synchronization when SpaceRemit team changes status
+- **Improved**: Transaction dashboard with better filtering and export options
+- **Updated**: Support for separate Live and Test API keys
+
+### Version 1.0.4
+- Added WooCommerce Checkout Blocks support
+- Improved HPOS compatibility
+- Enhanced payment form UI
+
+### Version 1.0.3
+- Added transaction management dashboard
+- Improved logging functionality
+- Bug fixes and performance improvements
+
+### Version 1.0.2
+- Fixed callback handling
+- Added support for multiple payment methods
+- UI improvements
+
+### Version 1.0.1
+- Initial bug fixes
+- Improved error handling
+
+### Version 1.0.0
+- Initial release
+- Basic payment processing
+- Webhook support
+- Transaction logging
+
+## 🔒 Security
+
+- All API keys are stored securely in WordPress database
+- HTTPS is enforced for production payments
+- Webhook signature validation available
+- Idempotency prevents duplicate processing
+- Comprehensive logging for audit trails
+- Sanitization and validation of all inputs
+
+## 🛠️ Technical Details
+
+### Database Schema
+
+The plugin creates a custom table `wp_spaceremit_transactions` with the following structure:
+
+```sql
+CREATE TABLE wp_spaceremit_transactions (
+    id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
+    order_id BIGINT(20) NOT NULL,
+    spaceremit_payment_id VARCHAR(255) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    status_tag VARCHAR(5) NOT NULL,
+    customer_email VARCHAR(100) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    gateway_response LONGTEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY spaceremit_payment_id (spaceremit_payment_id),
+    KEY order_id (order_id),
+    KEY status (status),
+    KEY created_at (created_at)
+);
+```
+
+### Status Mapping
+
+| SpaceRemit Status | WooCommerce Status | Description |
+|------------------|-------------------|-------------|
+| A (Approved) | Completed | Payment successful |
+| T (Test) | Completed | Test payment successful |
+| B (Pending) | On-hold | Payment pending |
+| D (Processing) | Processing | Payment being processed |
+| F (Failed) | Failed | Payment failed |
+| C (Cancelled) | Cancelled | Payment cancelled |
+| E (Expired) | Cancelled | Payment expired |
+
+### Webhook Payload
+
+Expected webhook JSON structure:
+
+```json
+{
+    "data": {
+        "id": "PAYMENT_ID",
+        "status_tag": "A",
+        "original_amount": 100.00,
+        "currency": "USD",
+        "payment_method": "card",
+        ...
+    }
+}
+```
+
+### API Endpoints
+
+- **Payment Info**: `https://spaceremit.com/api/v2`
+- **Webhook Callback**: `https://your-domain.com/?spaceremit_callback=1`
+
+## 📄 License
+
+This plugin is licensed under GPL v2.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow WordPress coding standards.
+
+## 📞 Support
+
+- **Plugin Support**: Contact SpaceRemit support team
+- **Documentation**: This README file
+- **SpaceRemit API**: [SpaceRemit Documentation](https://spaceremit.com/)
+
+---
+
+**Made with ❤️ for WooCommerce merchants**
+
+*Last Updated: October 2025*
